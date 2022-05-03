@@ -1,10 +1,11 @@
-print('메소드(9팀) - 팀 프로젝트')
+# 메소드(9팀) - 팀 프로젝트
 
 import imp
 from turtle import done
 import pygame
 import random
 
+# 게임판 구성
 pygame.init()
 size = [600, 900]
 screen = pygame.display.set_mode(size)
