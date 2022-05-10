@@ -1,8 +1,9 @@
 import pygame
 import random
 
-bomb_image = pygame.image.load('bomb.png')
-bomb_shadow = pygame.image.load('shadow.png')
+bomb_image = pygame.image.load('src/bomb.png')
+bomb_shadow = pygame.image.load('src/bomb_shadow.png')
+
 bomb_rotate = [0, 0, 0, 0]
 
 
@@ -36,3 +37,13 @@ def bomb_MoveEffect(bomb):
     bomb['shadow'].left = bomb['x'] + ((50 - sc) / 2)
     bomb['rotate'] = (bomb['rotate'] + 1) % 3
     return bomb
+
+
+def changeExplosion(bomb):
+    bomb['rect'].top = bomb['y']-25
+    bomb['rect'].left = bomb['x']-25
+    return {'rect': bomb['rect'], 'cnt': 0}
+
+
+def explosionImage(cnt): # 폭발 이미지
+    return pygame.transform.scale(pygame.image.load('src/bomb_explosion' + str(cnt // 3 + 1) + '.png'), (100, 100))
