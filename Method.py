@@ -3,51 +3,92 @@
 from turtle import done
 import pygame
 import random
-from bomb import *
+import bomb
 
 # 게임판 구성
 pygame.init()
 SCREEN_WIDTH = 600
-SCREEN_HEIGHT = 900
+SCREEN_HEIGHT = 600
 size = [SCREEN_WIDTH, SCREEN_HEIGHT]
 screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
 
+bomb.init(SCREEN_WIDTH, SCREEN_HEIGHT)
+
+# 배경이미지
+# background = pygame.image.load("background.png")
+
+# 캐릭터
+character = pygame.transform.scale(pygame.image.load("src/character.png"), (50,50))
+characterSize = character.get_rect().size  # img크기 불러옴
+characterWidth = characterSize[0]
+characterHeight = characterSize[1]
+characterXpos = (SCREEN_WIDTH / 2) - (characterWidth / 2)
+characterYpos = SCREEN_HEIGHT - characterHeight
+
+# 이동할 좌표
+toX = 0
+toY = 0
+
+# 이동속도
+characterSpeed = 10
+
+# 난수 생성 - 똥 생성용
+randomNumber = 30
+poSpeed = 10
+
+# 게임 플레이 총 시간
+totalTime = 10
+startTicks = pygame.time.get_ticks()
+
 
 def runGame():
-    bombs = []  # 폭탄들을 저장할 변수
-    explosion = []  # 폭파 지점
-
-    for _ in range(2):  # 처음 폭탄 수
-        bombs.append(createBomb(SCREEN_WIDTH, SCREEN_HEIGHT))
-
+    global toX, toY, characterXpos, characterYpos
     run = True
 
     while run:
         screen.fill((255, 255, 255))
-        clock.tick(10)
+        dt = clock.tick(20)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    toX -= characterSpeed
+                if event.key == pygame.K_RIGHT:
+                    toX += characterSpeed
+                if event.key == pygame.K_UP:
+                    toY -= characterSpeed
+                if event.key == pygame.K_DOWN:
+                    toY += characterSpeed
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                    toX = 0
+                elif event.key == pygame.K_UP or event.key == pygame.K_DOWN:
+                    toY = 0
 
-        # bomb ----------
-        for bomb in bombs:
-            bomb = bomb_MoveEffect(bomb)
-            if bomb['rect'].top > bomb['y']:
-                explosion.append(changeExplosion(bomb))
-                bombs.remove(bomb)
-                bombs.append(createBomb(SCREEN_WIDTH, SCREEN_HEIGHT))
 
-        for bomb in bombs:
-            screen.blit(transformImage(bomb_shadow, bomb['scale'], bomb_rotate[bomb['rotate']]), bomb['shadow'])
-            screen.blit(transformImage(bomb_image, bomb['scale'], bomb_rotate[bomb['rotate']]), bomb['rect'])
-        for exp in explosion:
-            screen.blit(explosionImage(exp['cnt']), exp['rect'])
-            exp['cnt'] += 1
-            if exp['cnt'] >= 15:
-                explosion.remove(exp)
-        # --------------
+
+        # 캐릭터 이동 & 프레임맞추기
+        characterXpos += toX
+        characterYpos += toY
+
+        # 경계 설정-가로
+        if characterXpos < 0:
+            characterXpos = 0
+        elif characterXpos > SCREEN_WIDTH - characterWidth:
+            characterXpos = SCREEN_WIDTH - characterWidth
+
+        # 경계 설정-세로
+        if characterYpos < 0:
+            characterYpos = 0
+        elif characterYpos > SCREEN_HEIGHT - characterHeight:
+            characterYpos = SCREEN_HEIGHT - characterHeight
+
+        screen.blit(character, (characterXpos, characterYpos))
+
+        bomb.run(screen)
 
         pygame.display.update()
     pygame.quit()
