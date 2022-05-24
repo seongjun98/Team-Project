@@ -63,15 +63,8 @@ def runGame():
                     elif event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                         person.toY = 0
         if Gaming:
-            bomb.run(screen)
             person.run(screen)
-            if heart == 3:
-                screen.blit(heart3, (500, 0))
-            elif heart == 2:
-                screen.blit(heart2, (500, 0))
-            elif heart == 1:
-                screen.blit(heart1, (500, 0))
-
+            bomb.run(screen)
             pp = person.getPos()
             for b in bomb.explosion:
                 if b['hit']:
@@ -83,6 +76,12 @@ def runGame():
                     if heart <= 0:
                         Gaming = False
                     break
+            if heart == 3:
+                screen.blit(heart3, (500, 0))
+            elif heart == 2:
+                screen.blit(heart2, (500, 0))
+            elif heart == 1:
+                screen.blit(heart1, (500, 0))
 
         pygame.display.update()
 
