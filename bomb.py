@@ -48,7 +48,7 @@ def bomb_MoveEffect(bomb):
 def changeExplosion(bomb):
     bomb['rect'].top = bomb['y'] - 25
     bomb['rect'].left = bomb['x'] - 25
-    return {'rect': bomb['rect'], 'cnt': 0}
+    return {'rect': bomb['rect'], 'cnt': 0, 'hit': False, 'scale': 50}
 
 
 def explosionImage(cnt):  # 폭발 이미지
@@ -62,6 +62,13 @@ def init(width, height):
     SCREEN_HEIGHT = height
     for _ in range(2):  # 처음 폭탄 수
         bombs.append(createBomb(SCREEN_WIDTH, SCREEN_HEIGHT))
+
+
+def getPos():
+    res = []
+    for exp in explosion:
+        res.append({'x': exp['rect'].left, 'y': exp['rect'].top, 'scale': 50, 'hit': False})
+    return res
 
 
 def run(screen):
