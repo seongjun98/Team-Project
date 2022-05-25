@@ -20,7 +20,7 @@ def transformImage(image, scale, rotate):  # 이미지 변화 함수
 
 def createBomb(width, height):
     posX = random.randint(0, width)  # 떨어질 X좌표
-    posY = random.randint(30, height - 200)  # 떨어질 Y좌표
+    posY = random.randint(30, height)  # 떨어질 Y좌표
     rect = pygame.Rect(bomb_image.get_rect())
     rect.top = posY - 200  # 200 위부터 시작
     rect.left = posX
@@ -32,6 +32,10 @@ def createBomb(width, height):
     scale = (0, 0)
     rotate = 0
     return {'rect': rect, 'x': posX, 'y': posY, 'scale': scale, 'speed': speed, 'shadow': shadow, 'rotate': rotate}
+
+
+def addBomb():
+    bombs.append(createBomb(SCREEN_WIDTH, SCREEN_HEIGHT))
 
 
 def bomb_MoveEffect(bomb):
