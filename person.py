@@ -6,8 +6,17 @@ characterXpos = 0
 characterYpos = 0
 
 # 캐릭터
-character = pygame.transform.scale(pygame.image.load("src/character.png"), (50, 50))
-characterSize = character.get_rect().size  # img크기 불러옴
+character = [pygame.transform.scale(pygame.image.load("src/character0.png"), (50, 50)),
+             pygame.transform.scale(pygame.image.load("src/character1.png"), (50, 50)),
+             pygame.transform.scale(pygame.image.load("src/character2.png"), (50, 50)),
+             pygame.transform.scale(pygame.image.load("src/character3.png"), (50, 50)),
+             pygame.transform.scale(pygame.image.load("src/character4.png"), (50, 50)),
+             pygame.transform.scale(pygame.image.load("src/character5.png"), (50, 50)),
+             pygame.transform.scale(pygame.image.load("src/character6.png"), (50, 50)),
+             pygame.transform.scale(pygame.image.load("src/character7.png"), (50, 50)),
+             pygame.transform.scale(pygame.image.load("src/character8.png"), (50, 50)),
+             pygame.transform.scale(pygame.image.load("src/character9.png"), (50, 50))]
+characterSize = character[0].get_rect().size  # img크기 불러옴
 characterWidth = characterSize[0]
 characterHeight = characterSize[1]
 
@@ -26,9 +35,15 @@ toY = 0
 # 이동속도
 characterSpeed = 10
 
+f = 0
+moveIndex = 0
+
+direct = 0
+
 
 def moveX(x):
-    global toX
+    global toX, direct
+    direct = x
     toX += (x * characterSpeed)
 
 
@@ -42,7 +57,7 @@ def getPos():
 
 
 def run(screen):
-    global SCREEN_WIDTH, SCREEN_HEIGHT, characterXpos, characterYpos, toX, toY
+    global SCREEN_WIDTH, SCREEN_HEIGHT, characterXpos, characterYpos, toX, toY, f, moveIndex, direct
     # 캐릭터 이동 & 프레임맞추기
     characterXpos += toX
     characterYpos += toY
@@ -59,4 +74,11 @@ def run(screen):
     elif characterYpos > SCREEN_HEIGHT - characterHeight:
         characterYpos = SCREEN_HEIGHT - characterHeight
 
-    screen.blit(character, (characterXpos, characterYpos))
+    f += 1
+
+    if f % 2 == 0:
+        moveIndex += 1
+    if direct == 1:
+        screen.blit(character[moveIndex % 10], (characterXpos, characterYpos))
+    else:
+        screen.blit(pygame.transform.flip(character[moveIndex % 10], True, False), (characterXpos, characterYpos))

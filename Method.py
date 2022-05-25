@@ -28,26 +28,29 @@ poSpeed = 10
 totalTime = 10
 startTicks = pygame.time.get_ticks()
 
-heartfont = pygame.font.SysFont("arial", 30, True, True)
-heart3 = heartfont.render("♥ ♥ ♥", True, (0, 0, 0))
-heart2 = heartfont.render("  ♥ ♥", True, (0, 0, 0))
-heart1 = heartfont.render("    ♥", True, (0, 0, 0))
+font = pygame.font.SysFont("arial", 30, True, True)
+heart3 = font.render("♥ ♥ ♥", True, (0, 0, 0))
+heart2 = font.render("  ♥ ♥", True, (0, 0, 0))
+heart1 = font.render("    ♥", True, (0, 0, 0))
 
 
 def runGame():
     run = True
 
-    Gaming = True  # 시작 버튼을 눌렀을 경우
+    Gaming = 1  # 시작 버튼을 눌렀을 경우
     heart = 3  # 시작 버튼을 눌렀을 경우
+    score = 0
+    cnt = 0
 
     while run:
         screen.fill((255, 255, 255))
-        dt = clock.tick(20)
+        dt = clock.tick(30)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-            if Gaming:
+            # game 실행 start -------------------
+            if Gaming == 1:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
                         person.moveX(-1)
@@ -62,7 +65,7 @@ def runGame():
                         person.toX = 0
                     elif event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                         person.toY = 0
-        if Gaming:
+        if Gaming == 1:
             person.run(screen)
             bomb.run(screen)
             pp = person.getPos()
@@ -82,6 +85,15 @@ def runGame():
                 screen.blit(heart2, (500, 0))
             elif heart == 1:
                 screen.blit(heart1, (500, 0))
+
+            cnt += 1
+            if cnt % 10 == 0:
+                score += 1
+            if cnt % 100 == 0:
+                bomb.addBomb()
+                print("addBomb")
+            screen.blit(font.render(str(score), True, (0, 0, 0)), (50, 0))
+        # 게임 실행 End -------------------------
 
         pygame.display.update()
 
