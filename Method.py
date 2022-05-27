@@ -20,12 +20,12 @@ person.init(SCREEN_WIDTH, SCREEN_HEIGHT)
 # 배경이미지
 # background = pygame.image.load("background.png")
 
-# 난수 생성 - 똥 생성용
+# 난수 생성 - 폭탄 생서기
 randomNumber = 30
 poSpeed = 10
 
 # 게임 플레이 총 시간
-totalTime = 10
+totalTime = 0
 startTicks = pygame.time.get_ticks()
 
 font = pygame.font.SysFont("arial", 30, True, True)
