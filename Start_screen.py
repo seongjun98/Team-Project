@@ -28,7 +28,7 @@ def start():
     
     while True:
         for event in pygame.event.get():
-            # 게임 종료
+            # 게임 나가기
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
@@ -36,7 +36,7 @@ def start():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     Game_Start = True
-        # 스페이스바를 누르지 않았을 경우 -> 시작화면
+        # 스페이스바를 누르지 않았을 경우 -> 처음 시작 화면
         if Game_Start == False and Game_Over == False:
             screen.fill((255,255,255))
             screen.blit(message1, (110, 230))
@@ -47,5 +47,8 @@ def start():
         elif Game_Start == True and Game_Over == False:
             screen.fill((0,0,0))
             pygame.display.update()
+            # 게임 종료시 Game_Over = True
+        # elif Game_Start == True and Game_Over == True:
+            # 게임 종료 화면 출력
 
 start()
